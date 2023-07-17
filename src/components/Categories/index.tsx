@@ -1,7 +1,7 @@
-import { useGetData } from "../../hooks/useGetData"
 import { CategoriaProp } from "../../Types"
 import { Link } from "react-router-dom"
 import styles from "./styles.module.css"
+import { useQuery } from "@tanstack/react-query"
 
 function Categoria({ name, image, id }: CategoriaProp) {
   return (
@@ -17,12 +17,17 @@ function Categoria({ name, image, id }: CategoriaProp) {
 }
 
 export default function Categories() {
-  let url = "https://api.escuelajs.co/api/v1/categories"
-  const { data, error, loading } = useGetData<CategoriaProp>(url)
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["categorias"],
+    queryFn: () =>
+      fetch("https://api.escuelajs.co/api/v1/categories").then((res) =>
+        res.json()
+      ),
+  })
 
   return (
     <>
-      {loading && <h1>loading...</h1>}
+      {isLoading && <h1>loading...</h1>}
       {error && <h2>error</h2>}
       {data && (
         <div className={styles.categorias}>

@@ -1,18 +1,20 @@
-
-import {  Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import ProductsCreate from "./components/ProductsCreate"
 import ProductsEdit from "./components/ProductsEdit"
 import Products from "./components/Products"
-import ProductsId from './components/ProductsId'
-import CartDetail from './components/cartdetail'
+import ProductsId from "./components/ProductsId"
+import CartDetail from "./components/cartdetail"
 import Register from "./components/Register"
-import Inicio from './components/Inicio'
-import Login from './components/Login'
+import Inicio from "./components/Inicio"
+import Login from "./components/Login"
 import Categories from "./components/Categories"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+
+const queryClient = new QueryClient()
 
 export default function App() {
-  
   return (
+    <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/cart-detail" element={<CartDetail />} />
@@ -25,5 +27,6 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<Categories />} />
       </Routes>
-  );
+    </QueryClientProvider>
+  )
 }
