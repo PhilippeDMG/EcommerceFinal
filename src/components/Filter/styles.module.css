@@ -1,0 +1,14 @@
+.filtro{
+    width: 100%;
+    grid-area: filtro;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.filtro input {
+    min-width: 160px;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+}

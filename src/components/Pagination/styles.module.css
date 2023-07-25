@@ -1,0 +1,11 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  margin: 16px 0px;
+}
+.boton {
+  border-radius: 8px;
+}

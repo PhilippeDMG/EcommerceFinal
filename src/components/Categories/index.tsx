@@ -1,13 +1,12 @@
-import { CategoriaProp } from "../../Types"
+import { CategoriaProp, Categories } from "../../Types"
 import { Link } from "react-router-dom"
 import styles from "./styles.module.css"
-import { useQuery } from "@tanstack/react-query"
 
 function Categoria({ name, image, id }: CategoriaProp) {
   return (
     <Link
       to={`/products?category=${name}`}
-      state={{ id }}
+      state={{ id, type: "categoria" }}
       className={styles.link}
     >
       <h2>{name}</h2>
@@ -16,19 +15,11 @@ function Categoria({ name, image, id }: CategoriaProp) {
   )
 }
 
-export default function Categories() {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["categorias"],
-    queryFn: () =>
-      fetch("https://api.escuelajs.co/api/v1/categories").then((res) =>
-        res.json()
-      ),
-  })
-
+export default function Categories({ isLoading, isError, data }: Categories) {
   return (
     <>
       {isLoading && <h1>loading...</h1>}
-      {error && <h2>error</h2>}
+      {isError && <h2>error</h2>}
       {data && (
         <div className={styles.categorias}>
           <h1>Categorías</h1>
