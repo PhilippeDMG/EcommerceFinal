@@ -4,8 +4,10 @@ import { useCategory } from "../../categoryContext"
 
 export default function Filtro({
   setFilter,
+  setPage,
 }: {
   setFilter: React.Dispatch<React.SetStateAction<string>>
+  setPage: React.Dispatch<React.SetStateAction<number>>
 }) {
   const [active, setActive] = useState(false)
   const [precio, setPrecio] = useState("")
@@ -23,6 +25,7 @@ export default function Filtro({
         precioMax === "" ? "" : `price_max=${precioMax}&`
       }${categoria === "" ? "" : `categoryId=${categoria}&`}`
     )
+    setPage(0)
   }
 
   const { isLoadingCat, isErrorCat, dataCat } = useCategory()
@@ -54,7 +57,7 @@ export default function Filtro({
           name="precio"
           value={precio}
           onChange={(e) => setPrecio(e.target.value)}
-          disabled={precioMax !== "" || precioMin !== ""}
+          disabled={!!precioMax || !!precioMin}
         />
       </div>
       <div className={styles.item}>
@@ -65,7 +68,8 @@ export default function Filtro({
           name="precio-max"
           value={precioMax}
           onChange={(e) => setPrecioMax(e.target.value)}
-          disabled={precio !== ""}
+          disabled={!!precio}
+          min={0}
         />
       </div>
       <div className={styles.item}>
@@ -76,7 +80,8 @@ export default function Filtro({
           name="precio-min"
           value={precioMin}
           onChange={(e) => setPrecioMin(e.target.value)}
-          disabled={precio !== ""}
+          disabled={!!precio}
+          min={0}
         />
       </div>
       <div className={styles.item}>
@@ -91,7 +96,7 @@ export default function Filtro({
           {isLoadingCat && <option>Cargando...</option>}
           {isErrorCat && <option>Error...</option>}
           {dataCat &&
-            dataCat.map(({ name, id }: { name: string; id: number }) => (
+            dataCat.map(({ name, id }: { name: string; id: string }) => (
               <option key={id} value={id}>
                 {name}
               </option>

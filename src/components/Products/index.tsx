@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ProductoProp } from "../../Types"
 import Pagination from "../Pagination"
 import styles from "./styles.module.css"
@@ -26,7 +26,6 @@ export default function Productos() {
   const [page, setPage] = useState(0)
   const [filter, setFilter] = useState("")
 
-  useEffect(() => setPage(0), [filter])
   const fetchProducts = (page = 0) =>
     axios
       .get(
@@ -49,18 +48,22 @@ export default function Productos() {
         <main className={styles.container}>
           <div className={styles.titulo}>
             <h1>Productos</h1>
-            <Filtro setFilter={setFilter} />
+            <Filtro setFilter={setFilter} setPage={setPage} />
           </div>
           <div className={styles.productos}>
-            {data.map(
-              ({ description, images, price, title, id }: ProductoProp) => (
-                <Producto
-                  description={description}
-                  images={images}
-                  title={title}
-                  price={price}
-                  key={id}
-                />
+            {data.length === 0 ? (
+              <h1>No hay productos disponibles</h1>
+            ) : (
+              data.map(
+                ({ description, images, price, title, id }: ProductoProp) => (
+                  <Producto
+                    description={description}
+                    images={images}
+                    title={title}
+                    price={price}
+                    key={id}
+                  />
+                )
               )
             )}
           </div>
