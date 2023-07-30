@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { CategoriaProp, ProductoProp } from "../../Types"
+import { ProductoProp } from "../../Types"
 import Pagination from "../Pagination"
 import styles from "./styles.module.css"
 import { useQuery } from "@tanstack/react-query"
@@ -22,17 +22,7 @@ function Producto({
   )
 }
 
-type Categories = {
-  isLoadingCat: boolean
-  isErrorCat: boolean
-  dataCat: CategoriaProp[]
-}
-
-export default function Productos({
-  isLoadingCat,
-  isErrorCat,
-  dataCat,
-}: Categories) {
+export default function Productos() {
   const [page, setPage] = useState(0)
   const [filter, setFilter] = useState("")
 
@@ -59,12 +49,7 @@ export default function Productos({
         <main className={styles.container}>
           <div className={styles.titulo}>
             <h1>Productos</h1>
-            <Filtro
-              setFilter={setFilter}
-              isLoading={isLoadingCat}
-              isError={isErrorCat}
-              data={dataCat}
-            />
+            <Filtro setFilter={setFilter} />
           </div>
           <div className={styles.productos}>
             {data.map(

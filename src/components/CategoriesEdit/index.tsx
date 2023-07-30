@@ -1,14 +1,16 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { CATEGORIES_QUERY_KEY } from "../../constants/keys"
 
 export default function CategoriesEdit() {
   const [name, setName] = useState("")
   const [image, setImage] = useState<string>("")
   const [mje, setMje] = useState("")
   const { id } = useParams()
-
+  const queryClient = useQueryClient()
+  let navigate = useNavigate()
   type updatedCategory = {
     name: string
     image: string
@@ -24,6 +26,8 @@ export default function CategoriesEdit() {
     {
       onSuccess: (data) => {
         console.log(data)
+        queryClient.invalidateQueries({ queryKey: [CATEGORIES_QUERY_KEY] })
+        navigate("/categories")
       },
       onError: (e) => {
         console.log(e)

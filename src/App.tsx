@@ -11,6 +11,7 @@ import Categories from "./components/Categories"
 import Navbar from "./components/Navbar"
 import CategoriesCreate from "./components/ProductsCreate"
 import CategoriesEdit from "./components/CategoriesEdit"
+import { RequireAuth } from "./userContext"
 
 export default function App() {
   return (
@@ -23,11 +24,39 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/categories" element={<Categories />} />
-        <Route path="/category/create" element={<CategoriesCreate />} />
-        <Route path="/category/edit/:id" element={<CategoriesEdit />} />
-        <Route path="/product/create" element={<ProductsCreate />} />
+        <Route
+          path="/category/create"
+          element={
+            <RequireAuth>
+              <CategoriesCreate />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/category/edit/:id"
+          element={
+            <RequireAuth>
+              <CategoriesEdit />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/product/create"
+          element={
+            <RequireAuth>
+              <ProductsCreate />
+            </RequireAuth>
+          }
+        />
         <Route path="/products" element={<Products />} />
-        <Route path="/product/edit/:id" element={<ProductsEdit />} />
+        <Route
+          path="/product/edit/:id"
+          element={
+            <RequireAuth>
+              <ProductsEdit />
+            </RequireAuth>
+          }
+        />
         <Route path="*" element={<Categories />} />
       </Routes>
     </>

@@ -1,12 +1,15 @@
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export default function CategoriesCreate() {
   const [name, setName] = useState("")
   const [image, setImage] = useState<string>("")
   const [mje, setMje] = useState("")
-
+  let location = useLocation()
+  let from = location.state?.from?.pathname || "/"
+  let navigate = useNavigate()
   type newCategory = {
     name: string
     image: string
@@ -17,9 +20,7 @@ export default function CategoriesCreate() {
         .post("https://api.escuelajs.co/api/v1/categories/", newCategory)
         .then((resp) => resp.data),
     {
-      onSuccess: (data) => {
-        console.log(data)
-      },
+      onSuccess: () => navigate("/categories"),
       onError: (e) => {
         console.log(e)
         setMje("Error")

@@ -1,38 +1,42 @@
 import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import React from "react"
+import {
+  AuthContextType,
+  UserLoginDataResponse,
+  dataType,
+  tokensType,
+} from "./Types"
+import { ACCESS_TOKEN, USER } from "./constants/keys"
 
-const ACCESS_TOKEN = "ACCESS_TOKEN"
-
-type UserLoginDataResponse = {
-  access_token: string
-  refresh_token: string
-}
-interface AuthContextType {
-  user: any
-  signin: (user: UserLoginDataResponse, callback: VoidFunction) => void
-  signout: (callback: VoidFunction) => void
-}
 let AuthContext = React.createContext<AuthContextType>(null!)
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  let [user, setUser] = React.useState<UserLoginDataResponse>({
+  let [user, setUser] = React.useState<UserLoginDataResponse | null>(
+    JSON.parse(localStorage.getItem(USER)!)
+  )
+  let [tokens, setTokens] = React.useState<tokensType>({
     access_token: localStorage.getItem(ACCESS_TOKEN) || "",
     refresh_token: "",
   })
 
-  let signin = (newUser: UserLoginDataResponse, callback: VoidFunction) => {
-    setUser(newUser)
-    localStorage.setItem(ACCESS_TOKEN, newUser.access_token)
+  let signin = (data: dataType, callback: VoidFunction) => {
+    setUser(data.user)
+    setTokens(data.tokens)
+    localStorage.setItem(USER, JSON.stringify(data.user))
+    localStorage.setItem(ACCESS_TOKEN, data.tokens.access_token)
     return callback()
   }
 
   let signout = (callback: VoidFunction) => {
-    let object: UserLoginDataResponse = { access_token: "", refresh_token: "" }
-    setUser(object)
+    let object: tokensType = { access_token: "", refresh_token: "" }
+    setUser(null)
+    setTokens(object)
     localStorage.removeItem(ACCESS_TOKEN)
+    localStorage.removeItem(USER)
     return callback()
   }
 
-  let value: AuthContextType = { user, signin, signout }
+  let value: AuthContextType = { userData: { user, tokens }, signin, signout }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
@@ -46,9 +50,11 @@ interface AuthStatusProps {
 
 export default function AuthStatus({ children }: AuthStatusProps) {
   let auth = useAuth()
+  console.log()
+
   let navigate = useNavigate()
 
-  if (!auth.user.access_token) {
+  if (!auth.userData.tokens.access_token) {
     return children
   }
   return (
@@ -65,16 +71,16 @@ export default function AuthStatus({ children }: AuthStatusProps) {
   )
 }
 
-function RequireAuth({ children }: { children: JSX.Element }) {
+export function RequireAuth({ children }: { children: JSX.Element }) {
   let auth = useAuth()
   let location = useLocation()
 
-  if (!auth.user) {
+  if (auth.userData.user?.role !== "admin") {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />
+    return <Navigate to="/" state={{ from: location }} replace />
   }
   return children
 }

@@ -1,17 +1,12 @@
 import { useState } from "react"
 import styles from "./styles.module.css"
-import { Categories } from "../../Types"
-
-interface CatFiltro extends Categories {
-  setFilter: any
-}
+import { useCategory } from "../../categoryContext"
 
 export default function Filtro({
-  isLoading,
-  isError,
-  data,
   setFilter,
-}: CatFiltro) {
+}: {
+  setFilter: React.Dispatch<React.SetStateAction<string>>
+}) {
   const [active, setActive] = useState(false)
   const [precio, setPrecio] = useState("")
   const [titulo, setTitulo] = useState("")
@@ -30,6 +25,7 @@ export default function Filtro({
     )
   }
 
+  const { isLoadingCat, isErrorCat, dataCat } = useCategory()
   if (!active) {
     return (
       <button className={styles.filtro} onClick={() => setActive(true)}>
@@ -92,10 +88,10 @@ export default function Filtro({
           onChange={(e) => setCategoria(e.target.value)}
         >
           <option value="">Seleccione una categoría</option>
-          {isLoading && <option>Cargando...</option>}
-          {isError && <option>Error...</option>}
-          {data &&
-            data.map(({ name, id }: { name: string; id: number }) => (
+          {isLoadingCat && <option>Cargando...</option>}
+          {isErrorCat && <option>Error...</option>}
+          {dataCat &&
+            dataCat.map(({ name, id }: { name: string; id: number }) => (
               <option key={id} value={id}>
                 {name}
               </option>

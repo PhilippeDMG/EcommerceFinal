@@ -1,6 +1,6 @@
 import styles from "./styles.module.css"
 import { Link } from "react-router-dom"
-import AuthStatus from "../../requireauth"
+import AuthStatus from "../../userContext"
 
 export default function Navbar() {
   return (
