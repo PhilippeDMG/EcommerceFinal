@@ -11,7 +11,7 @@ import Categories from "./components/Categories"
 import Navbar from "./components/Navbar"
 import CategoriesCreate from "./components/ProductsCreate"
 import CategoriesEdit from "./components/CategoriesEdit"
-import { RequireAuth } from "./userContext"
+import { RequireAuth } from "./context/userContext"
 
 export default function App() {
   return (
