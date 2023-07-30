@@ -11,7 +11,6 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0px 32px;
-    justify-content: center;
 }
 .producto {
     display: flex;
@@ -33,25 +32,11 @@
   .producto h3 {
     margin: 10px 0;
     font-size: 18px;
-    color: #AAA;
+    color: #333;
   }
   
   .producto p {
     font-size: 16px;
-    color: #888;
-    text-align: center;
-  }
-
-  .titulo{
-    width: 100%;
-    display: grid;
-    padding: 16px 32px ;
-    box-sizing: border-box;
-    grid-template-columns: repeat(3,1fr);
-    grid-template-areas: 
-    ". titulo filtro";
-  }
-  .titulo h1{
-    grid-area: titulo;
+    color: #666;
     text-align: center;
   }

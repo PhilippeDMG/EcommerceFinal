@@ -1,13 +1,17 @@
-import { useLocation } from "react-router-dom"
-import { ProductoProp } from "../../Types"
+import { useEffect, useState } from "react"
+import { CategoriaProp, ProductoProp } from "../../Types"
+import Pagination from "../Pagination"
 import styles from "./styles.module.css"
 import { useQuery } from "@tanstack/react-query"
+import Filtro from "../Filter"
+import axios from "axios"
 
-function useSearch() {
-  return new URLSearchParams(useLocation().search)
-}
-
-function Producto({ description, title, price, images }: ProductoProp) {
+function Producto({
+  description,
+  title,
+  price,
+  images,
+}: Omit<ProductoProp, "id">) {
   return (
     <div className={styles.producto}>
       <img src={images[0]} />
@@ -18,16 +22,33 @@ function Producto({ description, title, price, images }: ProductoProp) {
   )
 }
 
-export default function Productos() {
-  let query = useSearch()
-  let category = query.get("category")
-  let { state } = useLocation()
-  const { isLoading, error, data } = useQuery({
-    queryKey: [`producto-categoria${state.id}`],
-    queryFn: () =>
-      fetch(
-        `https://api.escuelajs.co/api/v1/products/?categoryId=${state.id}`
-      ).then((res) => res.json()),
+type Categories = {
+  isLoadingCat: boolean
+  isErrorCat: boolean
+  dataCat: CategoriaProp[]
+}
+
+export default function Productos({
+  isLoadingCat,
+  isErrorCat,
+  dataCat,
+}: Categories) {
+  const [page, setPage] = useState(0)
+  const [filter, setFilter] = useState("")
+
+  useEffect(() => setPage(0), [filter])
+  const fetchProducts = (page = 0) =>
+    axios
+      .get(
+        `https://api.escuelajs.co/api/v1/products?${filter}offset=${
+          page * 10
+        }&limit=10`
+      )
+      .then((res) => res.data)
+  let { isLoading, error, data } = useQuery({
+    queryKey: ["productos", page, filter],
+    queryFn: () => fetchProducts(page),
+    keepPreviousData: true,
   })
 
   return (
@@ -36,17 +57,29 @@ export default function Productos() {
       {isLoading && <h1>Cargando...</h1>}
       {data && (
         <main className={styles.container}>
-          <h1>La categoria es: {category}</h1>
-          <div className={styles.productos}>
-            {data.map(({ description, images, price, title }: ProductoProp) => (
-              <Producto
-                description={description}
-                images={images}
-                title={title}
-                price={price}
-              />
-            ))}
+          <div className={styles.titulo}>
+            <h1>Productos</h1>
+            <Filtro
+              setFilter={setFilter}
+              isLoading={isLoadingCat}
+              isError={isErrorCat}
+              data={dataCat}
+            />
           </div>
+          <div className={styles.productos}>
+            {data.map(
+              ({ description, images, price, title, id }: ProductoProp) => (
+                <Producto
+                  description={description}
+                  images={images}
+                  title={title}
+                  price={price}
+                  key={id}
+                />
+              )
+            )}
+          </div>
+          <Pagination setPage={setPage} page={page} />
         </main>
       )}
     </>
