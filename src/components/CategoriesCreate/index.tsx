@@ -1,25 +1,26 @@
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export default function CategoriesCreate() {
   const [name, setName] = useState("")
   const [image, setImage] = useState<string>("")
   const [mje, setMje] = useState("")
-
+  let location = useLocation()
+  let from = location.state?.from?.pathname || "/"
+  let navigate = useNavigate()
   type newCategory = {
     name: string
     image: string
   }
   const newCategoryMutation = useMutation(
-    (newCategory: Partial<newCategory>) =>
+    (newCategory: newCategory) =>
       axios
         .post("https://api.escuelajs.co/api/v1/categories/", newCategory)
         .then((resp) => resp.data),
     {
-      onSuccess: (data) => {
-        console.log(data)
-      },
+      onSuccess: () => navigate("/categories"),
       onError: (e) => {
         console.log(e)
         setMje("Error")
@@ -33,9 +34,10 @@ export default function CategoriesCreate() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const newCategory: Partial<newCategory> = {}
-    if (name !== "") newCategory.name = name
-    if (image !== "") newCategory.image = image
+    const newCategory: newCategory = {
+      name,
+      image,
+    }
     newCategoryMutation.mutate(newCategory)
   }
 

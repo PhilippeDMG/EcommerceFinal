@@ -1,17 +1,14 @@
 import { useState } from "react"
 import styles from "./styles.module.css"
-import { Categories } from "../../Types"
-
-interface CatFiltro extends Categories {
-  setFilter: any
-}
+import { useCategory } from "../../categoryContext"
 
 export default function Filtro({
-  isLoading,
-  isError,
-  data,
   setFilter,
-}: CatFiltro) {
+  setPage,
+}: {
+  setFilter: React.Dispatch<React.SetStateAction<string>>
+  setPage: React.Dispatch<React.SetStateAction<number>>
+}) {
   const [active, setActive] = useState(false)
   const [precio, setPrecio] = useState("")
   const [titulo, setTitulo] = useState("")
@@ -28,8 +25,10 @@ export default function Filtro({
         precioMax === "" ? "" : `price_max=${precioMax}&`
       }${categoria === "" ? "" : `categoryId=${categoria}&`}`
     )
+    setPage(0)
   }
 
+  const { isLoadingCat, isErrorCat, dataCat } = useCategory()
   if (!active) {
     return (
       <button className={styles.filtro} onClick={() => setActive(true)}>
@@ -58,7 +57,7 @@ export default function Filtro({
           name="precio"
           value={precio}
           onChange={(e) => setPrecio(e.target.value)}
-          disabled={precioMax !== "" || precioMin !== ""}
+          disabled={!!precioMax || !!precioMin}
         />
       </div>
       <div className={styles.item}>
@@ -69,7 +68,8 @@ export default function Filtro({
           name="precio-max"
           value={precioMax}
           onChange={(e) => setPrecioMax(e.target.value)}
-          disabled={precio !== ""}
+          disabled={!!precio}
+          min={0}
         />
       </div>
       <div className={styles.item}>
@@ -80,7 +80,8 @@ export default function Filtro({
           name="precio-min"
           value={precioMin}
           onChange={(e) => setPrecioMin(e.target.value)}
-          disabled={precio !== ""}
+          disabled={!!precio}
+          min={0}
         />
       </div>
       <div className={styles.item}>
@@ -92,10 +93,10 @@ export default function Filtro({
           onChange={(e) => setCategoria(e.target.value)}
         >
           <option value="">Seleccione una categoría</option>
-          {isLoading && <option>Cargando...</option>}
-          {isError && <option>Error...</option>}
-          {data &&
-            data.map(({ name, id }: { name: string; id: number }) => (
+          {isLoadingCat && <option>Cargando...</option>}
+          {isErrorCat && <option>Error...</option>}
+          {dataCat &&
+            dataCat.map(({ name, id }: { name: string; id: string }) => (
               <option key={id} value={id}>
                 {name}
               </option>

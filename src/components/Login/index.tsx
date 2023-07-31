@@ -1,46 +1,44 @@
+import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
-import { useState } from "react"
+import { UserLoginDataResponse, loginType, tokensType } from "../../Types"
+import { useAuth } from "../../userContext"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useAuth } from "../../requireauth"
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [mje, setMje] = useState("")
-
-  let navigate = useNavigate()
   let auth = useAuth()
+  let navigate = useNavigate()
   let location = useLocation()
   let from = location.state?.from?.pathname || "/"
-
-  type loginType = {
-    email: String
-    password: String
-  }
-  type apiResponse = {
-    access_token: string
-    refresh_token: string
-  }
   const loginMutation = useMutation(
     (usuario: loginType) =>
       axios
-        .post<apiResponse, any>(
-          "https://api.escuelajs.co/api/v1/auth/login",
-          usuario
-        )
+        .post<tokensType>("https://api.escuelajs.co/api/v1/auth/login", usuario)
         .then((resp) => resp.data),
     {
-      onSuccess: (usuario: apiResponse) => {
-        auth.signin(usuario, () => {
+      onSuccess: async (tokens: tokensType) => {
+        const user = await axios
+          .get<UserLoginDataResponse>(
+            "https://api.escuelajs.co/api/v1/auth/profile",
+            {
+              headers: {
+                Authorization: `Bearer ${tokens.access_token}`,
+              },
+            }
+          )
+          .then((resp) => resp.data)
+        auth.signin({ user, tokens }, () => {
           navigate(from, { replace: true })
         })
       },
     }
   )
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    let formData: FormData = new FormData(e.currentTarget)
+    const email: string = formData.get("email")!.toString()
+    const password: string = formData.get("password")!.toString()
     const usuario: loginType = { email, password }
     loginMutation.mutate(usuario)
   }
@@ -50,21 +48,11 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
+          <input type="email" id="email" name="email" />
         </div>
         <div>
           <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
+          <input type="password" id="password" name="password" />
         </div>
         <button type="submit">Login</button>
       </form>

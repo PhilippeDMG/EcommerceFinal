@@ -1,31 +1,59 @@
 import { CategoriaProp, Categories } from "../../Types"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styles from "./styles.module.css"
+import { useCategory } from "../../categoryContext"
+import { useAuth } from "../../userContext"
+import Modal from "../Portal"
 
-function Categoria({ name, image, id }: CategoriaProp) {
+function Categoria({ name, image, id, role }: CategoriaProp) {
   return (
-    <Link
-      to={`/products?category=${name}`}
-      state={{ id, type: "categoria" }}
-      className={styles.link}
-    >
-      <h2>{name}</h2>
-      <img src={image} />
-    </Link>
+    <div className={styles.container}>
+      <Link
+        to={`/products?category=${name}`}
+        state={{ id, type: "categoria" }}
+        className={styles.link}
+      >
+        <h2>{name}</h2>
+        <img src={image} />
+      </Link>
+      {role === "admin" && <Modal id={id} />}
+      {role === "admin" && (
+        <Link to={`/category/edit/${id}`}>
+          <button>Editar</button>
+        </Link>
+      )}
+    </div>
   )
 }
 
-export default function Categories({ isLoading, isError, data }: Categories) {
+export default function Categories() {
+  const { isLoadingCat, isErrorCat, dataCat } = useCategory()
+  const {
+    userData: { user },
+  } = useAuth()
+  const role = user?.role
+  const navigate = useNavigate()
   return (
     <>
-      {isLoading && <h1>loading...</h1>}
-      {isError && <h2>error</h2>}
-      {data && (
+      {isLoadingCat && <h1>loading...</h1>}
+      {isErrorCat && <h2>error</h2>}
+      {dataCat && (
         <div className={styles.categorias}>
           <h1>Categorías</h1>
+          {role === "admin" && (
+            <button onClick={() => navigate("/category/create")}>
+              Agregar categorías
+            </button>
+          )}
           <div className={styles.contenedor}>
-            {data.map(({ id, image, name }: CategoriaProp) => (
-              <Categoria name={name} image={image} id={id} />
+            {dataCat.map(({ id, image, name }: Omit<CategoriaProp, "role">) => (
+              <Categoria
+                name={name}
+                image={image}
+                id={id}
+                key={id}
+                role={role}
+              />
             ))}
           </div>
         </div>

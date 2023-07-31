@@ -1,24 +1,33 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import { CATEGORIES_QUERY_KEY } from "../../constants/keys"
 
-export default function CategoriesCreate() {
+export default function CategoriesEdit() {
   const [name, setName] = useState("")
   const [image, setImage] = useState<string>("")
   const [mje, setMje] = useState("")
-
-  type newCategory = {
+  const { id } = useParams()
+  const queryClient = useQueryClient()
+  let navigate = useNavigate()
+  type updatedCategory = {
     name: string
     image: string
   }
-  const newCategoryMutation = useMutation(
-    (newCategory: Partial<newCategory>) =>
+  const updatedCategoryMutation = useMutation(
+    (updatedCategory: updatedCategory) =>
       axios
-        .post("https://api.escuelajs.co/api/v1/categories/", newCategory)
+        .put(
+          `https://api.escuelajs.co/api/v1/categories/${id}`,
+          updatedCategory
+        )
         .then((resp) => resp.data),
     {
       onSuccess: (data) => {
         console.log(data)
+        queryClient.invalidateQueries({ queryKey: [CATEGORIES_QUERY_KEY] })
+        navigate("/categories")
       },
       onError: (e) => {
         console.log(e)
@@ -33,15 +42,16 @@ export default function CategoriesCreate() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const newCategory: Partial<newCategory> = {}
-    if (name !== "") newCategory.name = name
-    if (image !== "") newCategory.image = image
-    newCategoryMutation.mutate(newCategory)
+    const updatedCategory: updatedCategory = {
+      name,
+      image,
+    }
+    updatedCategoryMutation.mutate(updatedCategory)
   }
 
   return (
     <>
-      <h1>Crear categoría</h1>
+      <h1>Actualizar categoría</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Nombre</label>
@@ -62,7 +72,7 @@ export default function CategoriesCreate() {
             value={image}
           />
         </div>
-        <button type="submit">Agregar</button>
+        <button type="submit">Actualizar</button>
       </form>
       {mje && <p>{mje}</p>}
     </>

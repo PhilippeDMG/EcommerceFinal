@@ -9,50 +9,55 @@ import Inicio from "./components/Inicio"
 import Login from "./components/Login"
 import Categories from "./components/Categories"
 import Navbar from "./components/Navbar"
-import { useQuery } from "@tanstack/react-query"
+import CategoriesCreate from "./components/ProductsCreate"
+import CategoriesEdit from "./components/CategoriesEdit"
+import { RequireAuth } from "./userContext"
 
 export default function App() {
-  const { isLoading, isError, data } = useQuery({
-    queryKey: ["categorias"],
-    queryFn: () =>
-      fetch("https://api.escuelajs.co/api/v1/categories").then((res) =>
-        res.json()
-      ),
-  })
-
   return (
     <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/cart-detail" element={<CartDetail />} />
-        <Route
-          path="/categories"
-          element={
-            <Categories isLoading={isLoading} isError={isError} data={data} />
-          }
-        />
-        <Route path="/product/create" element={<ProductsCreate />} />
-        <Route path="/products/edit/:id" element={<ProductsEdit />} />
         <Route path="/products/:id" element={<ProductsId />} />
-        <Route
-          path="/products"
-          element={
-            <Products
-              isLoadingCat={isLoading}
-              isErrorCat={isError}
-              dataCat={data}
-            />
-          }
-        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/categories" element={<Categories />} />
         <Route
-          path="*"
+          path="/category/create"
           element={
-            <Categories isLoading={isLoading} isError={isError} data={data} />
+            <RequireAuth>
+              <CategoriesCreate />
+            </RequireAuth>
           }
         />
+        <Route
+          path="/category/edit/:id"
+          element={
+            <RequireAuth>
+              <CategoriesEdit />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/product/create"
+          element={
+            <RequireAuth>
+              <ProductsCreate />
+            </RequireAuth>
+          }
+        />
+        <Route path="/products" element={<Products />} />
+        <Route
+          path="/product/edit/:id"
+          element={
+            <RequireAuth>
+              <ProductsEdit />
+            </RequireAuth>
+          }
+        />
+        <Route path="*" element={<Categories />} />
       </Routes>
     </>
   )
