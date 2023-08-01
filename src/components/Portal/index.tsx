@@ -3,6 +3,7 @@ import axios from "axios"
 import { useState } from "react"
 import { createPortal } from "react-dom"
 import { CATEGORIES_QUERY_KEY } from "../../constants/keys"
+import styles from "./styles.module.css"
 
 function ModalContent({ onClose, id }: { onClose: VoidFunction; id: string }) {
   const queryClient = useQueryClient()
@@ -44,7 +45,10 @@ export default function Modal({ id }: { id: string }) {
 
   return (
     <>
-      <button onClick={() => setShowModal(true)} className="deleteButton">
+      <button
+        onClick={() => setShowModal(true)}
+        className={`deleteButton ${styles.algo}`}
+      >
         Eliminar
       </button>
       {showModal &&

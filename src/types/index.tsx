@@ -7,12 +7,14 @@ export type CategoriaProp = {
 
 export type ProductoProp = {
   id: string
-  description: string
-  images: string[]
   title: string
   price: number
+  description: string
+  images: string[]
 }
-
+export interface Producto extends ProductoProp {
+  quantity: number
+}
 export type Categories = {
   isLoading: boolean
   isError: boolean

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import styles from "./styles.module.css"
-import { useCategory } from "../../categoryContext"
+import { useCategory } from "../../context/categoryContext"
 
 export default function Filtro({
   setFilter,
@@ -18,14 +18,18 @@ export default function Filtro({
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    setFilter(
-      `${precio === "" ? "" : `price=${precio}&`}${
-        titulo === "" ? "" : `title=${titulo}&`
-      }${precioMin === "" ? "" : `price_min=${precioMin}&`}${
-        precioMax === "" ? "" : `price_max=${precioMax}&`
-      }${categoria === "" ? "" : `categoryId=${categoria}&`}`
-    )
-    setPage(0)
+    if (!!precioMax === !!precioMin) {
+      setFilter(
+        `${precio === "" ? "" : `price=${precio}&`}${
+          titulo === "" ? "" : `title=${titulo}&`
+        }${precioMin === "" ? "" : `price_min=${precioMin}&`}${
+          precioMax === "" ? "" : `price_max=${precioMax}&`
+        }${categoria === "" ? "" : `categoryId=${categoria}&`}`
+      )
+      setPage(0)
+    } else {
+      alert("Ingresar precio máximo y mínimo juntos")
+    }
   }
 
   const { isLoadingCat, isErrorCat, dataCat } = useCategory()
@@ -38,7 +42,10 @@ export default function Filtro({
   }
 
   return (
-    <form className={styles.filtro} onSubmit={handleSubmit}>
+    <form
+      className={`${styles.filtro} ${active ? styles["filtro-active"] : ""}`}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.item}>
         <label htmlFor="titulo">Título</label>
         <input

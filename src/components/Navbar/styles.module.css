@@ -14,19 +14,23 @@
 }
 .links {
   display: flex;
+  align-items: center;
   gap: 16px;
 }
 .navbar-link {
   padding: 16px;
   color: white;
-  border-radius: 16px;
-  transition: background-color 0.3s;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 .navbar-link:hover {
   cursor: pointer;
-  background-color: lightblue;
-  color: yellow;
+  background-color: lightgray;
   border: 1px solid;
+}
+.navbar-link:active{
+  background-color: white;
+  color:black;
 }
 .navbar img {
   height: 62px;

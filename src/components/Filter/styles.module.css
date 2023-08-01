@@ -1,9 +1,16 @@
 .filtro{
-    width: 100%;
+    width: fit-content;
+    height: fit-content;
     grid-area: filtro;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    padding: 16px 24px;
+}
+.filtro-active{
+    width:unset;
+    height: unset;
+    padding: unset;
 }
 .filtro input {
     min-width: 160px;

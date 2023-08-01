@@ -17,41 +17,60 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     width: 200px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  }
-  
-  .producto img {
+    text-align: center;
+}
+.producto img{
     width: 100%;
     height: auto;
-  }
-  
-  .producto h3 {
+}
+.producto  h3{
     margin: 10px 0;
     font-size: 18px;
     color: #AAA;
   }
-  
-  .producto p {
+.producto  p{
     font-size: 16px;
     color: #888;
     text-align: center;
   }
-
-  .titulo{
-    width: 100%;
-    display: grid;
-    padding: 16px 32px ;
-    box-sizing: border-box;
-    grid-template-columns: repeat(3,1fr);
-    grid-template-areas: 
-    ". titulo filtro";
-  }
-  .titulo h1{
-    grid-area: titulo;
-    text-align: center;
-  }
+.titulo{
+  width: 100%;
+  display: grid;
+  padding: 16px 32px ;
+  box-sizing: border-box;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-areas: 
+  ". titulo filtro";
+  align-items: center;
+  justify-items: center;
+}
+.titulo h1{
+  grid-area: titulo;
+  text-align: center;
+}
+.bottom {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+.mybottom{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.botones {
+  border-radius: 5px;
+  border: 1px solid white;
+}
+.botones {
+  width: 2rem;
+  height: 2rem;
+}

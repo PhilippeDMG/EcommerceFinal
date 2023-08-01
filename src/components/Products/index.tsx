@@ -1,26 +1,11 @@
 import { useState } from "react"
-import { ProductoProp } from "../../Types"
+import { ProductoProp } from "../../types"
 import Pagination from "../Pagination"
 import styles from "./styles.module.css"
 import { useQuery } from "@tanstack/react-query"
 import Filtro from "../Filter"
 import axios from "axios"
-
-function Producto({
-  description,
-  title,
-  price,
-  images,
-}: Omit<ProductoProp, "id">) {
-  return (
-    <div className={styles.producto}>
-      <img src={images[0]} />
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <h3>${price}</h3>
-    </div>
-  )
-}
+import Producto from "./producto"
 
 export default function Productos() {
   const [page, setPage] = useState(0)
@@ -62,6 +47,7 @@ export default function Productos() {
                     title={title}
                     price={price}
                     key={id}
+                    id={id}
                   />
                 )
               )

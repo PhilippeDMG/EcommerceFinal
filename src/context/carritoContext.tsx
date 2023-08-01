@@ -1,6 +1,6 @@
 import { createContext, useState } from "react"
 import React from "react"
-import { Producto } from "../Types"
+import { Producto } from "../types"
 
 type CarritoContextType = {
   carrito: Producto[]
@@ -8,6 +8,7 @@ type CarritoContextType = {
   addProduct: (product: Producto) => void
   removeProductCD: (product: Producto) => void
   addProductCD: (product: Producto) => void
+  resetCarrito: () => void
 }
 const CarritoContext = createContext<CarritoContextType>(null!)
 export function CarritoContextProvider({
@@ -22,7 +23,7 @@ export function CarritoContextProvider({
     const productoExistente = carrito.find((item) => item.id === product.id)
 
     if (productoExistente) {
-      productoExistente.quantity += 1
+      productoExistente.quantity += product.quantity
       const nuevoCarrito = carrito.map((item) =>
         productoExistente.id === item.id ? productoExistente : item
       )
@@ -42,15 +43,22 @@ export function CarritoContextProvider({
     setTotal(total + product.price)
   }
   const removeProductCD = (product: Producto) => {
-    const nuevoCarrito = carrito.map((item) =>
+    let nuevoCarrito = carrito.map((item) =>
       product.id === item.id ? { ...item, quantity: item.quantity - 1 } : item
     )
-    nuevoCarrito.filter((item) => item.quantity === 0)
+    nuevoCarrito = nuevoCarrito.filter((item) => item.quantity !== 0)
     setCarrito(nuevoCarrito)
     setTotal(total - product.price)
   }
-
-  let value = { carrito, total, addProduct, removeProductCD, addProductCD }
+  const resetCarrito = () => setCarrito([])
+  let value = {
+    carrito,
+    total,
+    addProduct,
+    removeProductCD,
+    addProductCD,
+    resetCarrito,
+  }
 
   return (
     <CarritoContext.Provider value={value}>{children}</CarritoContext.Provider>
