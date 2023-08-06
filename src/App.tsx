@@ -3,7 +3,6 @@ import ProductsCreate from "./components/ProductsCreate"
 import ProductsEdit from "./components/ProductsEdit"
 import Products from "./components/Products"
 import ProductsId from "./components/ProductsId"
-import CartDetail from "./components/Cartdetail"
 import Register from "./components/Register"
 import Inicio from "./components/Inicio"
 import Login from "./components/Login"
@@ -19,7 +18,6 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Inicio />} />
-        <Route path="/cart-detail" element={<CartDetail />} />
         <Route path="/products/:id" element={<ProductsId />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
