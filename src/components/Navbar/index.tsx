@@ -15,7 +15,7 @@ export default function Navbar() {
         {!!total && user && (
           <div className={styles.links}>
             <p>${total.toLocaleString()}</p>
-            <Link to={"/"}>
+            <Link to={"/cart-detail"}>
               <button>Ver carrito</button>
             </Link>
           </div>

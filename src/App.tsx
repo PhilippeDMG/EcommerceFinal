@@ -13,6 +13,8 @@ import CategoriesCreate from "./components/ProductsCreate"
 import CategoriesEdit from "./components/CategoriesEdit"
 import { RequireAuth } from "./context/userContext"
 import styles from "./App.module.css"
+import CompraExitosa from "./components/CompraExitosa"
+
 export default function App() {
   return (
     <div className={styles.app}>
@@ -40,6 +42,7 @@ export default function App() {
             </RequireAuth>
           }
         />
+        <Route path="/success" element={<CompraExitosa />} />
         <Route
           path="/product/create"
           element={

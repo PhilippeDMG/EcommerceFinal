@@ -6,10 +6,17 @@ import { useQuery } from "@tanstack/react-query"
 import Filtro from "../Filter"
 import axios from "axios"
 import Producto from "./producto"
+import { useAuth } from "../../context/userContext"
+import { useNavigate } from "react-router-dom"
 
 export default function Productos() {
   const [page, setPage] = useState(0)
   const [filter, setFilter] = useState("")
+  const {
+    userData: { user },
+  } = useAuth()
+  const role = user?.role
+  const navigate = useNavigate()
 
   const fetchProducts = (page = 0) =>
     axios
@@ -26,14 +33,19 @@ export default function Productos() {
   })
 
   return (
-    <>
+    <div className={styles.container}>
       {error && <h1>Hubo un error...</h1>}
       {isLoading && <h1>Cargando...</h1>}
       {data && (
-        <main className={styles.container}>
+        <>
           <div className={styles.titulo}>
             <h1>Productos</h1>
             <Filtro setFilter={setFilter} setPage={setPage} />
+            {role === "admin" && (
+              <button onClick={() => navigate("/category/create")}>
+                Agregar productos
+              </button>
+            )}
           </div>
           <div className={styles.productos}>
             {data.length === 0 ? (
@@ -54,8 +66,8 @@ export default function Productos() {
             )}
           </div>
           <Pagination setPage={setPage} page={page} />
-        </main>
+        </>
       )}
-    </>
+    </div>
   )
 }

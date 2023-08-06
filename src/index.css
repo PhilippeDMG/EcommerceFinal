@@ -40,7 +40,6 @@
   color: white;
   padding: 8px 4px;
   border-radius: 8px;
-  /* text-align: center; */
 }
 a {
   font-weight: 500;
@@ -68,7 +67,17 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
+.deleteButton {
+  background-color: red;
+}
+.green-button {
+  background-color: green;
+}
+.deleteButton .green-button {
+  color: white;
+  padding: 8px 4px;
+  border-radius: 8px;
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;

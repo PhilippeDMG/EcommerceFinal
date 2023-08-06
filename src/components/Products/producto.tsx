@@ -3,6 +3,7 @@ import { ProductoProp } from "../../types"
 import { useCarrito } from "../../context/carritoContext"
 import styles from "./styles.module.css"
 import { useAuth } from "../../context/userContext"
+import Modal from "../Portal"
 
 interface ProdProd extends Omit<ProductoProp, "id"> {
   children: JSX.Element
@@ -41,6 +42,7 @@ export default function Producto({
   const {
     userData: { user },
   } = useAuth()
+  const role = user?.role
   const [quantity, setQuantity] = useState<number>(0)
   const handleClick = () => {
     if (!user) return alert("Tenés que iniciar sesión para acceder al carrito!")
@@ -71,6 +73,7 @@ export default function Producto({
         <button onClick={handleClick} disabled={!quantity}>
           Agregar al carrito
         </button>
+        {role === "admin" && <Modal id={id} forProduct={true} />}
       </>
     </Prod>
   )

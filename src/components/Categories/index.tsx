@@ -17,7 +17,7 @@ function Categoria({ name, image, id, role }: CategoriaProp) {
         <img src={image} />
       </Link>
       <div className={styles.botones}>
-        {role === "admin" && <Modal id={id} />}
+        {role === "admin" && <Modal id={id} forProduct={false} />}
         {role === "admin" && (
           <Link to={`/category/edit/${id}`} className={styles.linko}>
             <button>Editar</button>
@@ -36,11 +36,11 @@ export default function Categories() {
   const role = user?.role
   const navigate = useNavigate()
   return (
-    <>
-      {isLoadingCat && <h1>loading...</h1>}
-      {isErrorCat && <h2>error</h2>}
+    <div className={styles.categorias}>
+      {isLoadingCat && <h1>Cargando...</h1>}
+      {isErrorCat && <h1>Error</h1>}
       {dataCat && (
-        <div className={styles.categorias}>
+        <>
           <h1>Categorías</h1>
           {role === "admin" && (
             <button onClick={() => navigate("/category/create")}>
@@ -58,8 +58,8 @@ export default function Categories() {
               />
             ))}
           </div>
-        </div>
+        </>
       )}
-    </>
+    </div>
   )
 }

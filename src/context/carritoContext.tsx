@@ -50,7 +50,10 @@ export function CarritoContextProvider({
     setCarrito(nuevoCarrito)
     setTotal(total - product.price)
   }
-  const resetCarrito = () => setCarrito([])
+  const resetCarrito = () => {
+    setCarrito([])
+    setTotal(0)
+  }
   let value = {
     carrito,
     total,
