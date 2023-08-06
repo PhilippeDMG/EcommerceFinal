@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { UserLoginDataResponse, loginType, tokensType } from "../../Types"
@@ -6,7 +5,6 @@ import { useAuth } from "../../userContext"
 import { useLocation, useNavigate } from "react-router-dom"
 
 export default function LoginForm() {
-  const [mje, setMje] = useState("")
   let auth = useAuth()
   let navigate = useNavigate()
   let location = useLocation()
@@ -56,7 +54,6 @@ export default function LoginForm() {
         </div>
         <button type="submit">Login</button>
       </form>
-      {mje && <p>{mje}</p>}
     </>
   )
 }
