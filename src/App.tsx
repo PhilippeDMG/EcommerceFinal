@@ -3,7 +3,7 @@ import ProductsCreate from "./components/ProductsCreate"
 import ProductsEdit from "./components/ProductsEdit"
 import Products from "./components/Products"
 import ProductsId from "./components/ProductsId"
-import CartDetail from "./components/cartdetail"
+import CartDetail from "./components/Cartdetail"
 import Register from "./components/Register"
 import Inicio from "./components/Inicio"
 import Login from "./components/Login"
@@ -11,11 +11,11 @@ import Categories from "./components/Categories"
 import Navbar from "./components/Navbar"
 import CategoriesCreate from "./components/ProductsCreate"
 import CategoriesEdit from "./components/CategoriesEdit"
-import { RequireAuth } from "./userContext"
-
+import { RequireAuth } from "./context/userContext"
+import styles from "./App.module.css"
 export default function App() {
   return (
-    <>
+    <div className={styles.app}>
       <Navbar />
       <Routes>
         <Route path="/" element={<Inicio />} />
@@ -59,6 +59,6 @@ export default function App() {
         />
         <Route path="*" element={<Categories />} />
       </Routes>
-    </>
+    </div>
   )
 }

@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
-import { UserLoginDataResponse, loginType, tokensType } from "../../Types"
-import { useAuth } from "../../userContext"
-import { useLocation, useNavigate } from "react-router-dom"
+import { UserLoginDataResponse, loginType, tokensType } from "../../types"
+import { useAuth } from "../../context/userContext"
+import { useNavigate } from "react-router-dom"
+import styles from "./styles.module.css"
+import Contenedor from "../ContenedorForm"
 
 export default function LoginForm() {
   let auth = useAuth()
   let navigate = useNavigate()
-  let location = useLocation()
-  let from = location.state?.from?.pathname || "/"
   const loginMutation = useMutation(
     (usuario: loginType) =>
       axios
@@ -27,7 +27,7 @@ export default function LoginForm() {
           )
           .then((resp) => resp.data)
         auth.signin({ user, tokens }, () => {
-          navigate(from, { replace: true })
+          navigate("/", { replace: true })
         })
       },
     }
@@ -42,18 +42,21 @@ export default function LoginForm() {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" />
-        </div>
-        <div>
-          <label htmlFor="password">Contraseña</label>
-          <input type="password" id="password" name="password" />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </>
+    <Contenedor img="/shopping.webp">
+      <div className="title-inputs">
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="input-container">
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" name="email" />
+          </div>
+          <div className="input-container">
+            <label htmlFor="password">Contraseña</label>
+            <input type="password" id="password" name="password" />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </Contenedor>
   )
 }

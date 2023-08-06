@@ -1,13 +1,13 @@
-import { CategoriaProp, Categories } from "../../Types"
+import { CategoriaProp, Categories } from "../../types"
 import { Link, useNavigate } from "react-router-dom"
 import styles from "./styles.module.css"
-import { useCategory } from "../../categoryContext"
-import { useAuth } from "../../userContext"
+import { useCategory } from "../../context/categoryContext"
+import { useAuth } from "../../context/userContext"
 import Modal from "../Portal"
 
 function Categoria({ name, image, id, role }: CategoriaProp) {
   return (
-    <div className={styles.container}>
+    <div className={styles.categoria}>
       <Link
         to={`/products?category=${name}`}
         state={{ id, type: "categoria" }}
@@ -16,12 +16,14 @@ function Categoria({ name, image, id, role }: CategoriaProp) {
         <h2>{name}</h2>
         <img src={image} />
       </Link>
-      {role === "admin" && <Modal id={id} />}
-      {role === "admin" && (
-        <Link to={`/category/edit/${id}`}>
-          <button>Editar</button>
-        </Link>
-      )}
+      <div className={styles.botones}>
+        {role === "admin" && <Modal id={id} />}
+        {role === "admin" && (
+          <Link to={`/category/edit/${id}`} className={styles.linko}>
+            <button>Editar</button>
+          </Link>
+        )}
+      </div>
     </div>
   )
 }

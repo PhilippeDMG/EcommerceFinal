@@ -5,8 +5,9 @@ import {
   UserLoginDataResponse,
   dataType,
   tokensType,
-} from "./Types"
-import { ACCESS_TOKEN, USER } from "./constants/keys"
+} from "../types"
+import { ACCESS_TOKEN, USER } from "../constants/keys"
+import { useCarrito } from "./carritoContext"
 
 let AuthContext = React.createContext<AuthContextType>(null!)
 
@@ -50,24 +51,28 @@ interface AuthStatusProps {
 
 export default function AuthStatus({ children }: AuthStatusProps) {
   let auth = useAuth()
+  let { resetCarrito } = useCarrito()
   console.log()
 
   let navigate = useNavigate()
 
-  if (!auth.userData.tokens.access_token) {
+  if (!auth.userData.user) {
     return children
   }
   return (
-    <p>
-      Welcome !
+    <>
+      <p>Hola {auth.userData.user.name}!</p>
       <button
         onClick={() => {
-          auth.signout(() => navigate("/"))
+          auth.signout(() => {
+            navigate("/")
+            resetCarrito()
+          })
         }}
       >
         Sign out
       </button>
-    </p>
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { createContext } from "react"
 import React from "react"
-import { CATEGORIES_QUERY_KEY } from "./constants/keys"
+import { CATEGORIES_QUERY_KEY } from "../constants/keys"
 
 type Category = {
   id: string
