@@ -22,7 +22,7 @@ export default function ProductCreate() {
         .post("https://api.escuelajs.co/api/v1/products/", newProduct)
         .then((resp) => resp.data),
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         alert("Producto creado con éxito")
       },
       onError: (e) => {
