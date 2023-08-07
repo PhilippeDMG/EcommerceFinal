@@ -1,9 +1,0 @@
-.compra-exitosa{
-    width: 100%;
-    height: calc(100% - 94px);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-    padding-top: 32px;
-}

@@ -42,7 +42,7 @@ export default function Productos() {
             <h1>Productos</h1>
             <Filtro setFilter={setFilter} setPage={setPage} />
             {role === "admin" && (
-              <button onClick={() => navigate("/category/create")}>
+              <button onClick={() => navigate("/product/create")}>
                 Agregar productos
               </button>
             )}

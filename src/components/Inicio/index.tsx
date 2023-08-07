@@ -1,16 +1,15 @@
 import { useAuth } from "../../context/userContext"
-import styles from "./styles.module.css"
 
 export default function Inicio() {
   const {
     userData: { user },
   } = useAuth()
   return (
-    <div className={styles.inicio}>
+    <div className="main">
       {user?.name ? (
         <h1>Hola {user.name}!</h1>
       ) : (
-        <div className={styles.texto}>
+        <div className="contenedor" style={{ textAlign: "center" }}>
           <h1>Hola!</h1>
           <h3>Para acceder al carrito, tenés que loguearte!</h3>
         </div>

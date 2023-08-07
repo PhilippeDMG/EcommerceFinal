@@ -4,6 +4,7 @@ import { useCarrito } from "../../context/carritoContext"
 import styles from "./styles.module.css"
 import { useAuth } from "../../context/userContext"
 import Modal from "../Portal"
+import { Link } from "react-router-dom"
 
 interface ProdProd extends Omit<ProductoProp, "id"> {
   children: JSX.Element
@@ -60,7 +61,7 @@ export default function Producto({
   return (
     <Prod images={images} title={title} description={description} price={price}>
       <>
-        <div className={styles.bottom}>
+        <div className={styles.cantidad}>
           <button
             onClick={() => setQuantity(quantity - 1)}
             disabled={quantity === 0}
@@ -73,7 +74,14 @@ export default function Producto({
         <button onClick={handleClick} disabled={!quantity}>
           Agregar al carrito
         </button>
-        {role === "admin" && <Modal id={id} forProduct={true} />}
+        {role === "admin" && (
+          <div className={styles.botones}>
+            <Modal id={id} forProduct={true} />
+            <Link to={`/product/edit/${id}`} className={styles.linko}>
+              <button>Editar</button>
+            </Link>
+          </div>
+        )}
       </>
     </Prod>
   )

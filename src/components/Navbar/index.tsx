@@ -2,8 +2,10 @@ import styles from "./styles.module.css"
 import { Link } from "react-router-dom"
 import AuthStatus, { useAuth } from "../../context/userContext"
 import { useCarrito } from "../../context/carritoContext"
+import { useState } from "react"
 
 export default function Navbar() {
+  const [visible, setVisible] = useState<boolean>(false)
   const { total } = useCarrito()
   const {
     userData: { user },
@@ -12,16 +14,21 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.links}>
         <img src="/ecommerce.svg" alt="logo" />
+        <img
+          src="/burger-menu.svg"
+          alt="logo"
+          onClick={() => setVisible(!visible)}
+        />
         {!!total && user && (
           <div className={styles.links}>
-            <p>${total.toLocaleString()}</p>
+            <p>Total: ${total.toLocaleString()}</p>
             <Link to={"/cart-detail"}>
               <button>Ver carrito</button>
             </Link>
           </div>
         )}
       </div>
-      <div className={styles.links}>
+      <div className={`${styles["nav-links"]} ${visible ? styles.active : ""}`}>
         <Link className={styles["navbar-link"]} to="/products">
           Productos
         </Link>
@@ -36,6 +43,13 @@ export default function Navbar() {
             Registrarse
           </Link>
         </AuthStatus>
+        {visible && (
+          <img
+            className={styles.x}
+            src="/x-symbol.svg"
+            onClick={() => setVisible(!visible)}
+          />
+        )}
       </div>
     </nav>
   )

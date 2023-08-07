@@ -23,9 +23,7 @@ export default function ProductsEdit() {
         .put(`https://api.escuelajs.co/api/v1/products/${id}`, updatedProduct)
         .then((resp) => resp.data),
     {
-      onSuccess: (data) => {
-        console.log(data)
-      },
+      onSuccess: () => alert("Producto editado con éxito"),
       onError: (e) => {
         console.log(e)
         setMje("Error")
@@ -41,17 +39,17 @@ export default function ProductsEdit() {
 
     const updatedProduct: Partial<updatedProduct> = {}
     if (title !== "") updatedProduct.title = title
-    if (price !== 0) updatedProduct.price = price
+    if (!!price) updatedProduct.price = price
     if (description !== "") updatedProduct.description = description
     if (images[0] !== "") updatedProduct.images = images
     updatedMutation.mutate(updatedProduct)
   }
 
   return (
-    <>
-      <h1>Editar productos</h1>
+    <div className="main">
+      <h1>Editar producto</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="container">
           <label htmlFor="title">Título</label>
           <input
             type="text"
@@ -60,7 +58,7 @@ export default function ProductsEdit() {
             value={title}
           />
         </div>
-        <div>
+        <div className="container">
           <label htmlFor="price">Precio</label>
           <input
             type="price"
@@ -68,7 +66,7 @@ export default function ProductsEdit() {
             onChange={(e) => setPrice(parseInt(e.target.value))}
           />
         </div>
-        <div>
+        <div className="container">
           <label htmlFor="description">Descripción</label>
           <textarea
             id="description"
@@ -77,7 +75,7 @@ export default function ProductsEdit() {
             value={description}
           />
         </div>
-        <div>
+        <div className="container">
           <label htmlFor="images">Imagen</label>
           <input
             placeholder="ingrese una url"
@@ -90,6 +88,6 @@ export default function ProductsEdit() {
         <button type="submit">Actualizar</button>
       </form>
       {mje && <p>{mje}</p>}
-    </>
+    </div>
   )
 }

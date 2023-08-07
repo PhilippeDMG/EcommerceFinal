@@ -50,10 +50,10 @@ export default function CategoriesEdit() {
   }
 
   return (
-    <>
+    <div className="main">
       <h1>Actualizar categoría</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="container">
           <label htmlFor="name">Nombre</label>
           <input
             type="text"
@@ -62,7 +62,7 @@ export default function CategoriesEdit() {
             value={name}
           />
         </div>
-        <div>
+        <div className="container">
           <label htmlFor="image">Imagen</label>
           <input
             placeholder="ingrese una url"
@@ -75,6 +75,6 @@ export default function CategoriesEdit() {
         <button type="submit">Actualizar</button>
       </form>
       {mje && <p>{mje}</p>}
-    </>
+    </div>
   )
 }

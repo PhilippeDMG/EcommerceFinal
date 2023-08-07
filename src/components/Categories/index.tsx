@@ -14,7 +14,7 @@ function Categoria({ name, image, id, role }: CategoriaProp) {
         className={styles.link}
       >
         <h2>{name}</h2>
-        <img src={image} />
+        <img src={image} alt="imagen" />
       </Link>
       <div className={styles.botones}>
         {role === "admin" && <Modal id={id} forProduct={false} />}

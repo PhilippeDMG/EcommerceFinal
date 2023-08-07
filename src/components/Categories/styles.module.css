@@ -13,18 +13,18 @@
 .contenedor {
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 8px;
 }
 
 .categoria {
   display: flex;
   flex-direction: column;
+  height: 100%;
   width: 20%;
   justify-content: center;
+  text-align: center;
 }
 .categoria strong {
   color: #333;
@@ -46,11 +46,27 @@
   align-items: center;
 }
 .botones{
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  align-items: center;
 }
 .botones button, .botones .linko{
-  width: 40%;
+  width: 100%;
 }
 .linko button {
   width: 100%;
+}
+
+
+@media screen and (max-width: 800px) {
+  .categoria{
+    width: 33%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .categoria{
+    width: 50%;
+  }
 }

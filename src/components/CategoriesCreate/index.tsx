@@ -1,13 +1,11 @@
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 
 export default function CategoriesCreate() {
   const [name, setName] = useState("")
   const [image, setImage] = useState<string>("")
   const [mje, setMje] = useState("")
-  let navigate = useNavigate()
   type newCategory = {
     name: string
     image: string
@@ -18,7 +16,7 @@ export default function CategoriesCreate() {
         .post("https://api.escuelajs.co/api/v1/categories/", newCategory)
         .then((resp) => resp.data),
     {
-      onSuccess: () => navigate("/categories"),
+      onSuccess: () => alert("Categoría creada con éxito"),
       onError: (e) => {
         console.log(e)
         setMje("Error")
@@ -40,10 +38,10 @@ export default function CategoriesCreate() {
   }
 
   return (
-    <>
+    <div className="main">
       <h1>Crear categoría</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="container">
           <label htmlFor="name">Nombre</label>
           <input
             type="text"
@@ -52,7 +50,7 @@ export default function CategoriesCreate() {
             value={name}
           />
         </div>
-        <div>
+        <div className="container">
           <label htmlFor="image">Imagen</label>
           <input
             placeholder="ingrese una url"
@@ -65,6 +63,6 @@ export default function CategoriesCreate() {
         <button type="submit">Agregar</button>
       </form>
       {mje && <p>{mje}</p>}
-    </>
+    </div>
   )
 }
