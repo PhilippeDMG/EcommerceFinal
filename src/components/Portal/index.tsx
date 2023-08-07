@@ -26,10 +26,14 @@ function ModalContent({
           queryClient.invalidateQueries({
             queryKey: [forProduct ? PRODUCTS_QUERY_KEY : CATEGORIES_QUERY_KEY],
           })
-          console.log("exito")
+          alert(
+            `${
+              forProduct ? "Producto eliminado" : "Categoría eliminada"
+            } con éxito`
+          )
         }
       },
-      onError: (e) => console.log(e),
+      onError: () => alert("Error"),
     }
   )
 

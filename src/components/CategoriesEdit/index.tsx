@@ -16,7 +16,7 @@ export default function CategoriesEdit() {
     image: string
   }
   const updatedCategoryMutation = useMutation(
-    (updatedCategory: updatedCategory) =>
+    (updatedCategory: Partial<updatedCategory>) =>
       axios
         .put(
           `https://api.escuelajs.co/api/v1/categories/${id}`,
@@ -24,8 +24,7 @@ export default function CategoriesEdit() {
         )
         .then((resp) => resp.data),
     {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [CATEGORIES_QUERY_KEY] })
         navigate("/categories")
       },
@@ -42,10 +41,11 @@ export default function CategoriesEdit() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const updatedCategory: updatedCategory = {
-      name,
-      image,
-    }
+    const updatedCategory: Partial<updatedCategory> = {}
+    if (!!name) updatedCategory.name = name
+    if (!!image) updatedCategory.image = image
+    console.log(updatedCategory)
+
     updatedCategoryMutation.mutate(updatedCategory)
   }
 
@@ -69,7 +69,6 @@ export default function CategoriesEdit() {
             type="url"
             id="image"
             onChange={(e) => setImage(e.target.value)}
-            value={image}
           />
         </div>
         <button type="submit">Actualizar</button>

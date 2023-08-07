@@ -24,6 +24,7 @@ export default function RegisterForm() {
       onSuccess: () => navigate(from, { replace: true }),
       onError: (e) => {
         console.log(e)
+        alert("Error")
       },
     }
   )
@@ -55,6 +56,7 @@ export default function RegisterForm() {
               id="name"
               onChange={(e) => setName(e.target.value)}
               value={name}
+              required
             />
           </div>
           <div className="input-container">
@@ -64,6 +66,7 @@ export default function RegisterForm() {
               id="email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              required
             />
           </div>
           <div className="input-container">
@@ -73,6 +76,7 @@ export default function RegisterForm() {
               id="password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              required
             />
           </div>
           <button type="submit">Registrase</button>

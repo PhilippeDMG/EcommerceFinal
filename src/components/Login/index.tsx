@@ -29,6 +29,11 @@ export default function LoginForm() {
           navigate("/", { replace: true })
         })
       },
+      onError: (e: any) => {
+        const err = e.response.data.message
+        if (err === "Unauthorized") alert("Contraseña errónea")
+        else alert("Error")
+      },
     }
   )
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,11 +52,11 @@ export default function LoginForm() {
         <form onSubmit={handleSubmit}>
           <div className="input-container">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" />
+            <input type="email" id="email" name="email" required />
           </div>
           <div className="input-container">
             <label htmlFor="password">Contraseña</label>
-            <input type="password" id="password" name="password" />
+            <input type="password" id="password" name="password" required />
           </div>
           <button type="submit">Login</button>
         </form>

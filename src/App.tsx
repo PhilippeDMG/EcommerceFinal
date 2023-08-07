@@ -14,6 +14,7 @@ import CategoriesEdit from "./components/CategoriesEdit"
 import { RequireAuth } from "./context/userContext"
 import styles from "./App.module.css"
 import CompraExitosa from "./components/CompraExitosa"
+import NotFound from "./components/NotFound"
 
 export default function App() {
   return (
@@ -60,7 +61,7 @@ export default function App() {
             </RequireAuth>
           }
         />
-        <Route path="*" element={<Categories />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   )

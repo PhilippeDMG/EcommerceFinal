@@ -1,6 +1,7 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import React from "react"
 import { Producto } from "../types"
+import { CARRITO } from "../constants/keys"
 
 type CarritoContextType = {
   carrito: Producto[]
@@ -19,6 +20,21 @@ export function CarritoContextProvider({
   const [carrito, setCarrito] = useState<Producto[]>([])
   const [total, setTotal] = useState<number>(0)
 
+  useEffect(() => {
+    const carritoStorage = localStorage.getItem(CARRITO)
+    if (carritoStorage) {
+      const carritoStorage2 = JSON.parse(carritoStorage)
+      setCarrito(carritoStorage2)
+      const sum = carritoStorage2.reduce(
+        (acumulador: number, producto: Producto) => {
+          return acumulador + producto.quantity * producto.price
+        },
+        0
+      )
+      setTotal(sum)
+    }
+  }, [])
+
   const addProduct = (product: Producto) => {
     const productoExistente = carrito.find((item) => item.id === product.id)
 
@@ -28,8 +44,11 @@ export function CarritoContextProvider({
         productoExistente.id === item.id ? productoExistente : item
       )
       setCarrito(nuevoCarrito)
+      localStorage.setItem(CARRITO, JSON.stringify(nuevoCarrito))
     } else {
-      setCarrito([...carrito, product])
+      const newCarrito = [...carrito, product]
+      setCarrito(newCarrito)
+      localStorage.setItem(CARRITO, JSON.stringify(newCarrito))
     }
     setTotal(total + product.price * product.quantity)
   }
@@ -41,6 +60,7 @@ export function CarritoContextProvider({
     )
     setCarrito(nuevoCarrito)
     setTotal(total + product.price)
+    localStorage.setItem(CARRITO, JSON.stringify(nuevoCarrito))
   }
   const removeProductCD = (product: Producto) => {
     let nuevoCarrito = carrito.map((item) =>
@@ -49,10 +69,16 @@ export function CarritoContextProvider({
     nuevoCarrito = nuevoCarrito.filter((item) => item.quantity !== 0)
     setCarrito(nuevoCarrito)
     setTotal(total - product.price)
+    if (nuevoCarrito.length === 0) {
+      localStorage.removeItem(CARRITO)
+    } else {
+      localStorage.setItem(CARRITO, JSON.stringify(nuevoCarrito))
+    }
   }
   const resetCarrito = () => {
     setCarrito([])
     setTotal(0)
+    localStorage.removeItem(CARRITO)
   }
   let value = {
     carrito,

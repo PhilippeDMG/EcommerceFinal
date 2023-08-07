@@ -61,9 +61,10 @@ export default function ProductsEdit() {
         <div className="container">
           <label htmlFor="price">Precio</label>
           <input
-            type="price"
+            type="number"
             id="price"
             onChange={(e) => setPrice(parseInt(e.target.value))}
+            min={1}
           />
         </div>
         <div className="container">
@@ -82,7 +83,9 @@ export default function ProductsEdit() {
             type="url"
             id="images"
             onChange={(e) => setImages([e.target.value])}
-            value={images}
+            required
+            // me daba error de axios, con el siguiente mensaje:
+            //responseText: "{\"statusCode\":400,\"message\":[\"images must contain at least 1 elements\"],\"error\":\"Bad Request\"}"
           />
         </div>
         <button type="submit">Actualizar</button>

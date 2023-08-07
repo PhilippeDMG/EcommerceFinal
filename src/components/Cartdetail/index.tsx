@@ -1,4 +1,3 @@
-import {} from "../../types"
 import { useCarrito } from "../../context/carritoContext"
 import { Prod } from "../Products/producto"
 import styles from "./styles.module.css"

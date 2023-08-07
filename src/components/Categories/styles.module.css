@@ -4,8 +4,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 16px;
 }
-
+.categorias img {
+  height: 256px;
+  aspect-ratio: 1/1;
+  background-size: cover;
+  
+}
 .categorias h1 {
   margin-bottom: 20px;
 }
